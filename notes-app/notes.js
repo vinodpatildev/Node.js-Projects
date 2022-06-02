@@ -3,14 +3,19 @@ const chalk = require('chalk')
 
 const readNotes = function(title){
     const notes = loadData()
-    notes.forEach((note) => {
-        if(note.title === title){
-            console.log(chalk.blue('------------------------------------------------')) 
-            console.log(chalk.green('title :')+note.title)
-            console.log(chalk.green('body  :')+note.body)
-            console.log(chalk.blue('------------------------------------------------')) 
-        }
-    })
+    const isNoteExist = notes.forEach((note) => note.title === title)
+    if(!isNoteExist){
+        notes.forEach((note) => {
+            if(note.title === title){
+                console.log(chalk.blue('------------------------------------------------')) 
+                console.log(chalk.green('title :')+note.title)
+                console.log(chalk.green('body  :')+note.body)
+                console.log(chalk.blue('------------------------------------------------')) 
+            }
+        })
+    }else{
+        console.log(chalk.red("Note with given title does not exists."))
+    }
 }
 const listNotes = function(){
     const notes = loadData()
@@ -24,8 +29,8 @@ const listNotes = function(){
 }
 const addNotes = function(title,body){
     const notes = loadData()
-    const duplicateNotes = notes.filter((note) => note.title === title)
-    if(duplicateNotes.length == 0){
+    const duplicateNote = notes.find((note) => note.title === title)
+    if(!duplicateNote){
         notes.push({
             title:title,
             body:body
